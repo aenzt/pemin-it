@@ -41,3 +41,12 @@ model Letter {
 
   @@map("letter")
 }
+
+model Schedule {
+  id_schedule  Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("schedule")
+}
+
