@@ -24,3 +24,20 @@ model User {
 
   @@map("users")
 }
+
+model Letter {
+  id_letter        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  nama_instansi String
+  no_surat String
+  status String
+  alamat String 
+  kota String
+  perihal String
+  tgl_mulai DateTime @default(now())
+  tgl_selesai DateTime @default(now())
+
+  @@map("letter")
+}
