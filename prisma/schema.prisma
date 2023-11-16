@@ -24,3 +24,18 @@ model User {
 
   @@map("users")
 }
+
+model Transaction {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name               String
+  jumlah             BigInt
+  penjual            String
+  catatan            String
+  bukti              String
+  jenis              String        
+
+  @@map("transactions")
+}
