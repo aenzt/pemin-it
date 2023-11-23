@@ -3,9 +3,8 @@ import { AuthModule } from './auth/auth.module';
 import { LegalModule } from './legal/legal.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { MiningModule } from './mining/mining.module';
-import { ConfigModule } from '@nestjs/config';
 import { EmployeeModule } from './employee/employee.module';
-import { FinanceModule } from './finance/finance.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
