@@ -47,12 +47,27 @@ model LegalLetter {
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    letterName String
+    companyName String
+    city String
+    endedAt String
+    startedAt String
     address    String
-    status     String
+    status     LetterStatus
+    type       LetterType
     detail     String
 
     @@map("legal_letter")
+}
+
+enum LetterType {
+    masuk
+    keluar
+}
+
+enum LetterStatus {
+    selesai
+    dalam_proses
+    ditolak
 }
 
 model LegalContract {
