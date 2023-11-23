@@ -120,3 +120,19 @@ model MiningAssets {
 
     @@map("mining_assets")
 }
+
+model Transaction {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name               String
+  amount             Int
+  price              String
+  seller_name        String
+  note               String
+  receipt            String
+  type               String        
+
+  @@map("transactions")
+}
