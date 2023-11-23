@@ -127,11 +127,12 @@ model Transaction {
   updatedAt DateTime @updatedAt
 
   name               String
-  jumlah             BigInt
-  penjual            String
-  catatan            String
-  bukti              String
-  jenis              String        
+  amount             Int
+  price              String
+  seller_name        String
+  note               String
+  receipt            String
+  type               String        
 
   @@map("transactions")
 }
