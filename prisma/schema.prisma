@@ -2,51 +2,137 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+    provider = "mysql"
+    url      = env("DATABASE_URL")
 }
 
-model User {
+model Employee {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    email              String             @unique
+    password           String
+    name               String
+    birthDate          DateTime           @db.Date
+    address            String
+    phoneNumber        String
+    sex                String             @db.Char(1)
+    hashedRefreshToken String?
+    division           Division           @relation("Division", fields: [idDivision], references: [idDivision])
+    idDivision         String             @unique
+    miningSchedule     EmployeeOnMining[]
+    MiningAssets       MiningAssets[]
+
+    @@map("employees")
+}
+
+model Division {
+    idDivision String   @id
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    name      String
+    employees Employee[] @relation("Division")
+
+    @@map("division")
+}
+
+model LegalLetter {
+    idLetter  Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    companyName String
+    city String
+    endedAt String
+    startedAt String
+    address    String
+    status     LetterStatus
+    type       LetterType
+    detail     String
+
+    @@map("legal_letter")
+}
+
+enum LetterType {
+    masuk
+    keluar
+}
+
+enum LetterStatus {
+    selesai
+    dalam_proses
+    ditolak
+}
+
+model LegalContract {
+    idContract Int      @id @default(autoincrement())
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    contractName   String
+    fileAttachment String
+    details        String
+
+    @@map("legal_contract")
+}
+
+model MiningSchedule {
+    idSchedule Int      @id @default(autoincrement())
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    startDate DateTime
+    endDate   DateTime
+    status    String
+    employee  EmployeeOnMining[]
+
+    @@map("mining_schedule")
+}
+
+model EmployeeOnMining {
+    employeeId Int
+    employee   Employee       @relation(fields: [employeeId], references: [id])
+    scheduleId Int
+    schedule   MiningSchedule @relation(fields: [scheduleId], references: [idSchedule])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@id([employeeId, scheduleId])
+    @@map("employee_on_mining")
+}
+
+model MiningAssets {
+    idAsset   Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    lastUsedById   Int
+    lastUsedBy     Employee @relation(fields: [lastUsedById], references: [id])
+    fileAttachment String
+    details        String
+
+    @@map("mining_assets")
+}
+
+model Transaction {
   id        Int      @id @default(autoincrement())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  email              String        @unique
   name               String
-  username           String
-  is_male            Boolean
-  age                Int
-  password           String
+  amount             Int
+  price              String
+  seller_name        String
+  note               String
+  receipt            String
+  type               String        
 
-  @@map("users")
+  @@map("transactions")
 }
-
-model Letter {
-  id_letter        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  nama_instansi String
-  no_surat String
-  status String
-  alamat String 
-  kota String
-  perihal String
-  tgl_mulai DateTime @default(now())
-  tgl_selesai DateTime @default(now())
-
-  @@map("letter")
-}
-
-model Schedule {
-  id_schedule  Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@map("schedule")
-}
-
