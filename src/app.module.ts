@@ -5,6 +5,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { MiningModule } from './mining/mining.module';
 import { EmployeeModule } from './employee/employee.module';
 import { ConfigModule } from '@nestjs/config';
+import { MarketingModule } from './marketing/marketing.module';
 
 @Module({
   imports: [
@@ -16,6 +17,7 @@ import { ConfigModule } from '@nestjs/config';
       isGlobal: true,
     }),
     EmployeeModule,
+    MarketingModule,
   ],
 })
 export class AppModule {}
