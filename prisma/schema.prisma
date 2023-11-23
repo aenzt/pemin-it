@@ -2,51 +2,106 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "mysql"
-  url      = env("DATABASE_URL")
+    provider = "mysql"
+    url      = env("DATABASE_URL")
 }
 
-model User {
-  id        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Employee {
+    id        Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-  email              String        @unique
-  name               String
-  username           String
-  is_male            Boolean
-  age                Int
-  password           String
+    email              String             @unique
+    password           String
+    name               String
+    birthDate          DateTime           @db.Date
+    address            String
+    phoneNumber        String
+    sex                String             @db.Char(1)
+    hashedRefreshToken String?
+    division           Division           @relation("Division", fields: [idDivision], references: [idDivision])
+    idDivision         String             @unique
+    miningSchedule     EmployeeOnMining[]
+    MiningAssets       MiningAssets[]
 
-  @@map("users")
+    @@map("employees")
 }
 
-model Letter {
-  id_letter        Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model Division {
+    idDivision String   @id
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
 
-  nama_instansi String
-  no_surat String
-  status String
-  alamat String 
-  kota String
-  perihal String
-  tgl_mulai DateTime @default(now())
-  tgl_selesai DateTime @default(now())
+    name      String
+    employees Employee[] @relation("Division")
 
-  @@map("letter")
+    @@map("division")
 }
 
-model Schedule {
-  id_schedule  Int      @id @default(autoincrement())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+model LegalLetter {
+    idLetter  Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
-  @@map("schedule")
+    letterName String
+    address    String
+    status     String
+    detail     String
+
+    @@map("legal_letter")
 }
 
+model LegalContract {
+    idContract Int      @id @default(autoincrement())
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    contractName   String
+    fileAttachment String
+    details        String
+
+    @@map("legal_contract")
+}
+
+model MiningSchedule {
+    idSchedule Int      @id @default(autoincrement())
+    createdAt  DateTime @default(now())
+    updatedAt  DateTime @updatedAt
+
+    startDate DateTime
+    endDate   DateTime
+    status    String
+    employee  EmployeeOnMining[]
+
+    @@map("mining_schedule")
+}
+
+model EmployeeOnMining {
+    employeeId Int
+    employee   Employee       @relation(fields: [employeeId], references: [id])
+    scheduleId Int
+    schedule   MiningSchedule @relation(fields: [scheduleId], references: [idSchedule])
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@id([employeeId, scheduleId])
+    @@map("employee_on_mining")
+}
+
+model MiningAssets {
+    idAsset   Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    lastUsedById   Int
+    lastUsedBy     Employee @relation(fields: [lastUsedById], references: [id])
+    fileAttachment String
+    details        String
+
+    @@map("mining_assets")
+}
