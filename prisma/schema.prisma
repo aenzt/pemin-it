@@ -131,6 +131,9 @@ model Customer{
     phoneNumber String
     sex         String 
     description String
+
+    company     Company_Marketing  @relation(fields: [idCompany], references: [IdComp])
+    idCompany   Int
     @@map("Customer")
 }     
 
@@ -141,7 +144,9 @@ model Company_Marketing {
 
     name        String 
     phoneNumber String 
-    address     String 
+    address     String
+    desc String 
+    customer    Customer[]
 
     @@map("Company_Marketing")
 }
