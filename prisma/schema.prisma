@@ -6,7 +6,7 @@ generator client {
 }
 
 datasource db {
-    provider = "mysql"
+    provider = "postgresql"
     url      = env("DATABASE_URL")
 }
 
@@ -129,6 +129,37 @@ model MiningAssets {
 
     @@map("mining_assets")
 }
+
+model Customer{
+    idCust Int @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    username    String @unique
+    email       String @unique
+
+    company     Company_Marketing  @relation(fields: [idCompany], references: [IdComp])
+    idCompany   Int
+
+    @@unique([idCompany])
+    @@map("marketing_customer")
+}     
+
+model Company_Marketing {
+    IdComp Int @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    name        String 
+    phoneNumber String 
+    address     String
+    about String 
+    message String
+    customer    Customer?
+
+    @@map("marketing_company_marketing")
+}
+
 
 model Transaction {
   id        Int      @id @default(autoincrement())
