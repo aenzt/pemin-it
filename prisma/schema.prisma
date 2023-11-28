@@ -70,6 +70,15 @@ enum LetterStatus {
     ditolak
 }
 
+enum DivisionName {
+    legal
+    marketing
+    hrd
+    finance
+    mining
+    rnd
+}
+
 model LegalContract {
     idContract Int      @id @default(autoincrement())
     createdAt  DateTime @default(now())
@@ -167,3 +176,60 @@ model Transaction {
 
   @@map("transactions")
 }
+
+model Project {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  name               String
+  lab_name           String
+  person_responsible String
+  status             String
+  general            General @relation(fields: [idGeneral], references: [id])
+  idGeneral          Int
+  dataAnalysis       DataAnalysis?
+  
+  @@unique([idGeneral])
+  @@map("rnd_project")
+}
+
+model DataAnalysis {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  result             String
+  storage            String
+  person_responsible String
+  category           String
+  project            Project @relation(fields: [idProject], references: [id])
+  idProject          Int
+
+  @@unique([idProject])
+  @@map("rnd_data_analysis")
+}
+
+model General {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  timestamp         DateTime
+  activity_update   String
+  location          String
+  project_count     Int
+  money_total       Int
+  day_total         Int
+  project           Project?
+  @@map("rnd_general")
+}
+
+// model Research {
+//   id        Int      @id @default(autoincrement())
+//   createdAt DateTime @default(now())
+//   updatedAt DateTime @updatedAt
+
+//   division  DivisionName
+//   name      String
+// }
