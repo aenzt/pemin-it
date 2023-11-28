@@ -11,8 +11,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new TransformInterceptor(new Reflector()));
 
-  //add comment
-
   const swaggerConfig = new DocumentBuilder()
     .setTitle('Instant Kit API')
     .setDescription('API for Instant Kit')

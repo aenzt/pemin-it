@@ -32,7 +32,6 @@ jobs:
           yarn add global @nestjs/cli
           yarn install
           yarn build
-          yarn prisma migrate deploy
       
       - name: 'Deploy to Azure Web App'
         id: deploy-to-webapp
