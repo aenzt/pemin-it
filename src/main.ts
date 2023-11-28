@@ -8,12 +8,13 @@ async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
   app.setGlobalPrefix('api/v1');
+  app.enableCors();
   app.useGlobalPipes(new ValidationPipe());
   app.useGlobalInterceptors(new TransformInterceptor(new Reflector()));
 
   const swaggerConfig = new DocumentBuilder()
-    .setTitle('Instant Kit API')
-    .setDescription('API for Instant Kit')
+    .setTitle('Pemrograman Integratif API')
+    .setDescription('API for Pemrograman Integratif Kelas D')
     .setVersion('1.0')
     .addBearerAuth()
     .build();
