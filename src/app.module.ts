@@ -6,6 +6,7 @@ import { MiningModule } from './mining/mining.module';
 import { EmployeeModule } from './employee/employee.module';
 import { ConfigModule } from '@nestjs/config';
 import { MarketingModule } from './marketing/marketing.module';
+import { FinanceModule } from './finance/finance.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { MarketingModule } from './marketing/marketing.module';
     }),
     EmployeeModule,
     MarketingModule,
+    FinanceModule,
   ],
 })
 export class AppModule {}
