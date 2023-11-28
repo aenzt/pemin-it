@@ -4,7 +4,7 @@ import { IsNotEmpty } from 'class-validator';
 class CreateCustomerDto {
   @IsNotEmpty()
   @ApiProperty()
-  Username: string;
+  username: string;
 
   @IsNotEmpty()
   @ApiProperty()

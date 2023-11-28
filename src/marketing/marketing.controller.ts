@@ -5,6 +5,7 @@ import { ResponseMessage } from 'src/transform/response_message.decorator';
 import { AccessTokenGuard } from 'src/auth/common/guards/accessToken.guard';
 import CreateCustomerDto from './dto/createCustomer.dto';
 import CreateCompanyDto from './dto/createCompany.dto';
+import ConsultDTO from './dto/consult.dto';
 
 @Controller('marketing')
 @ApiTags('Marketing')
@@ -40,5 +41,13 @@ export class MarketingController {
   @ApiBearerAuth()
   createCompany(@Body() body: CreateCompanyDto) {
     return this.marketingService.postCompany(body);
+  }
+
+  @Post('/consult')
+  @ResponseMessage('new consult created')
+  @UseGuards(AccessTokenGuard)
+  @ApiBearerAuth()
+  consult(@Body() body: ConsultDTO) {
+    return this.marketingService.consult(body);
   }
 }

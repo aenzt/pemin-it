@@ -1,7 +1,15 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty } from 'class-validator';
 
-class CreateCompanyDto {
+class ConsultDTO {
+  @IsNotEmpty()
+  @ApiProperty()
+  username: string;
+
+  @IsNotEmpty()
+  @ApiProperty()
+  email: string;
+
   @IsNotEmpty()
   @ApiProperty()
   name: string;
@@ -23,4 +31,4 @@ class CreateCompanyDto {
   message: string;
 }
 
-export default CreateCompanyDto;
+export default ConsultDTO;

@@ -126,15 +126,14 @@ model Customer{
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
-    Username    String @unique
-    email       String 
-    phoneNumber String
-    sex         String 
-    description String
+    username    String @unique
+    email       String @unique
 
     company     Company_Marketing  @relation(fields: [idCompany], references: [IdComp])
     idCompany   Int
-    @@map("Customer")
+
+    @@unique([idCompany])
+    @@map("marketing_customer")
 }     
 
 model Company_Marketing {
@@ -145,10 +144,11 @@ model Company_Marketing {
     name        String 
     phoneNumber String 
     address     String
-    desc String 
-    customer    Customer[]
+    about String 
+    message String
+    customer    Customer?
 
-    @@map("Company_Marketing")
+    @@map("marketing_company_marketing")
 }
 
 
