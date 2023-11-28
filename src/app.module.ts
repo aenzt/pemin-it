@@ -3,8 +3,9 @@ import { AuthModule } from './auth/auth.module';
 import { LegalModule } from './legal/legal.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { MiningModule } from './mining/mining.module';
-import { ConfigModule } from '@nestjs/config';
 import { EmployeeModule } from './employee/employee.module';
+import { ConfigModule } from '@nestjs/config';
+import { MarketingModule } from './marketing/marketing.module';
 import { FinanceModule } from './finance/finance.module';
 
 @Module({
@@ -17,6 +18,7 @@ import { FinanceModule } from './finance/finance.module';
       isGlobal: true,
     }),
     EmployeeModule,
+    MarketingModule,
     FinanceModule,
   ],
 })
