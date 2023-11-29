@@ -1,10 +1,19 @@
-import { Body, Controller, Get, Param, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
+import { ApiBearerAuth, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { MiningService } from './mining.service';
 import { ResponseMessage } from 'src/transform/response_message.decorator';
 import { AccessTokenGuard } from 'src/auth/common/guards/accessToken.guard';
 import PostHealthSurveyDTO from './dto/postHealthSurvey.dto';
 import PostToolSurvey from './dto/postToolSurvey.dto';
+import PostSchedule from './dto/postSchedule.dto';
 
 @Controller('mining')
 @ApiTags('Mining')
@@ -55,7 +64,31 @@ export class MiningController {
   @ResponseMessage('success getting mining schedule')
   @UseGuards(AccessTokenGuard)
   @ApiBearerAuth()
-  getScheduleByMonth(@Param() idSchedule: number) {
-    return this.miningService.getScheduleByMonth(idSchedule);
+  @ApiQuery({
+    name: 'from',
+    type: String,
+    example: 'YYYY-MM-DD',
+    required: true,
+  })
+  @ApiQuery({
+    name: 'to',
+    type: String,
+    example: 'YYYY-MM-DD',
+    required: true,
+  })
+  getScheduleByMonth(
+    @Param() idSchedule: number,
+    @Query('from') from: string,
+    @Query('to') to: string,
+  ) {
+    return this.miningService.getMiningScheduele(idSchedule, from, to);
+  }
+
+  @Post('/mining-schedule')
+  @ResponseMessage('success creating mining schedule')
+  @UseGuards(AccessTokenGuard)
+  @ApiBearerAuth()
+  postMiningSchedule(@Body() body: PostSchedule) {
+    return this.miningService.postMiningSchedule(body);
   }
 }

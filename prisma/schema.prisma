@@ -98,6 +98,8 @@ model MiningSchedule {
 
     startDate DateTime
     endDate   DateTime
+    activity  String
+    description String
     status    String
     employee  EmployeeOnMining[]
 

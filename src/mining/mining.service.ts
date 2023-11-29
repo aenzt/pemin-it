@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { PrismaService } from 'src/prisma/prisma.service';
 import PostHealthSurveyDTO from './dto/postHealthSurvey.dto';
 import PostToolSurvey from './dto/postToolSurvey.dto';
+import PostSchedule from './dto/postSchedule.dto';
 
 @Injectable()
 export class MiningService {
@@ -85,10 +86,17 @@ export class MiningService {
     return newToolSurvey;
   }
 
-  async getScheduleByMonth(idSchedule: number) {
+  async getMiningScheduele(idSchedule: number, from: string, to: string) {
+    const gte = new Date(from);
+    const lte = new Date(to);
+
     const miningSchedules = await this.prismaService.miningSchedule.findMany({
       where: {
         idSchedule,
+        createdAt: {
+          gte,
+          lte,
+        },
       },
     });
 
@@ -96,5 +104,20 @@ export class MiningService {
       throw new NotFoundException('mining schedule not found');
 
     return miningSchedules;
+  }
+
+  async postMiningSchedule(body: PostSchedule) {
+    const { activity, description, endDate, startDate, status } = body;
+    const newSchedule = await this.prismaService.miningSchedule.create({
+      data: {
+        activity,
+        description,
+        endDate: new Date(endDate),
+        startDate: new Date(startDate),
+        status,
+      },
+    });
+
+    return newSchedule;
   }
 }
