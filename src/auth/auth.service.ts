@@ -52,7 +52,10 @@ export class AuthService {
     const tokens = await this.generateTokens(user.id, user.email);
     await this.updateRtHash(user.id, tokens.refresh_token);
 
-    return tokens;
+    return {
+      ...tokens,
+      id: user.id,
+    };
   }
 
   async login(loginDto: LoginDto) {
@@ -70,7 +73,10 @@ export class AuthService {
     const tokens = await this.generateTokens(user.id, user.email);
     await this.updateRtHash(user.id, tokens.refresh_token);
 
-    return tokens;
+    return {
+      ...tokens,
+      id: user.id,
+    };
   }
 
   async refreshTokens(userId: number, refreshToken: string) {
@@ -128,7 +134,7 @@ export class AuthService {
     });
   }
 
-  async logout(userId: number): Promise<Boolean> {
+  async logout(userId: number): Promise<boolean> {
     await this.prisma.employee.updateMany({
       where: {
         id: userId,

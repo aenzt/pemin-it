@@ -8,6 +8,7 @@ export class EmployeeService {
   async getAllEmployee() {
     return this.prisma.employee.findMany({
       select: {
+        id: true,
         email: true,
         name: true,
         division: {
@@ -29,6 +30,7 @@ export class EmployeeService {
         id,
       },
       select: {
+        id: true,
         email: true,
         name: true,
         division: {

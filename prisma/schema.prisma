@@ -105,10 +105,13 @@ model MiningSchedule {
 }
 
 model EmployeeOnMining {
-    employeeId Int
+    employeeId Int @unique
     employee   Employee       @relation(fields: [employeeId], references: [id])
     scheduleId Int
     schedule   MiningSchedule @relation(fields: [scheduleId], references: [idSchedule])
+
+    healthSurvey HealthSurvey? 
+    toolSurvey ToolSurvey?
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -128,6 +131,38 @@ model MiningAssets {
     details        String
 
     @@map("mining_assets")
+}
+
+model HealthSurvey {
+    id   Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    pusing Boolean
+    demam Boolean
+    batuk Boolean
+    sehat Boolean
+
+    idEmployee Int @unique
+    employeeOnMining EmployeeOnMining @relation(fields: [idEmployee], references: [employeeId])
+
+    @@map("mining_health_survey")
+}
+
+model ToolSurvey {
+    id   Int      @id @default(autoincrement())
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    hasGoogles Boolean
+    hasGloves Boolean
+    hasVest Boolean
+    hasHelmet Boolean
+
+    idEmployee Int @unique
+    employeeOnMining EmployeeOnMining @relation(fields: [idEmployee], references: [employeeId])
+
+    @@map("mining_tool_survey")
 }
 
 model Customer{
