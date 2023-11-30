@@ -227,7 +227,6 @@ model Project {
   idGeneral          Int
   dataAnalysis       DataAnalysis?
   
-  @@unique([idGeneral])
   @@map("rnd_project")
 }
 
@@ -258,7 +257,9 @@ model General {
   project_count     Int
   money_total       Int
   day_total         Int
-  project           Project?
+  project           Project[]
+
+  @@unique([id])
   @@map("rnd_general")
 }
 
