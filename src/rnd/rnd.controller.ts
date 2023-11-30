@@ -37,7 +37,7 @@ export class RNDController {
   }
 
   @Post('/generals')
-  @ResponseMessage('Success get projects')
+  @ResponseMessage('Success creating general')
   @UseGuards(AccessTokenGuard)
   @ApiBearerAuth()
   createGeneral(@Body() body: CreateGeneralDTO) {
