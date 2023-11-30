@@ -24,7 +24,7 @@ model Employee {
     sex                String             @db.Char(1)
     hashedRefreshToken String?
     division           Division           @relation("Division", fields: [idDivision], references: [idDivision])
-    idDivision         String             @unique
+    idDivision         String             
     miningSchedule     EmployeeOnMining[]
     MiningAssets       MiningAssets[]
 
