@@ -2,6 +2,7 @@ import {
   BadRequestException,
   ForbiddenException,
   Injectable,
+  InternalServerErrorException,
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { ConfigService } from '@nestjs/config';
@@ -32,30 +33,42 @@ export class AuthService {
     } = registerDto;
     const hashedPassword = await argon.hash(password);
 
-    const user = await this.prisma.employee.create({
-      data: {
-        email,
-        password: hashedPassword,
-        name,
-        address,
-        birthDate: new Date(birthDate),
-        phoneNumber,
-        sex,
-        division: {
-          connect: {
-            idDivision: division,
+    try {
+      const user = await this.prisma.employee.create({
+        data: {
+          email,
+          password: hashedPassword,
+          name,
+          address,
+          birthDate: new Date(birthDate),
+          phoneNumber,
+          sex,
+          division: {
+            connect: {
+              idDivision: division,
+            },
           },
         },
-      },
-    });
+      });
 
-    const tokens = await this.generateTokens(user.id, user.email);
-    await this.updateRtHash(user.id, tokens.refresh_token);
+      const tokens = await this.generateTokens(user.id, user.email);
+      await this.updateRtHash(user.id, tokens.refresh_token);
 
-    return {
-      ...tokens,
-      id: user.id,
-    };
+      return {
+        ...tokens,
+        id: user.id,
+      };
+    } catch (error) {
+      if (error.code === 'P2002') {
+        throw new BadRequestException('Email already exists');
+      }
+      if (error.code === 'P2025') {
+        throw new BadRequestException(
+          "Division doesn't exist, please select between legal, marketing, hrd, finance, mining, rnd, or it",
+        );
+      }
+      throw new InternalServerErrorException(error);
+    }
   }
 
   async login(loginDto: LoginDto) {
